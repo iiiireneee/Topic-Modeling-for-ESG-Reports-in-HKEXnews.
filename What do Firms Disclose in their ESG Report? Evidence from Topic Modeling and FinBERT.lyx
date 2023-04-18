@@ -1,0 +1,2758 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding utf8
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement tph
+\paperfontsize default
+\spacing onehalf
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+What do Firms Disclose in their ESG Report? Evidence from Topic Modeling
+ and FinBERT
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+All codes, model and raw data can be found at 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://www.dropbox.com/sh/smf70ff1e0kh9of/AACsiJQcuiMK07HRNqtGknNqa?dl=0
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Tan Tingshuang
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+UID: 3035533422.
+ Email: ttshuang@connect.hku.hk
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+\noindent
+This project aims to uncover the contents disclosed in companies' ESG reports
+ by analyzing the ESG reports published by firms listed in HKEX, using tetxual
+ analysis techniques including topic modeling (LDA and BERTopic) and FinBERT.
+ The project wishfully helps stakeholders to understand firms' ESG report
+ better from textual analysis angle and provides some insights on ESG reporting
+ related standard setting.
+\end_layout
+
+\begin_layout Description
+\noindent
+
+\series bold
+Keywords
+\series default
+: Environmental, social and governance (ESG), disclosure, NLP, topic modeling
+\end_layout
+
+\begin_layout Section
+\noindent
+Introduction
+\end_layout
+
+\begin_layout Standard
+In recent years, there is a growing desire by many investors for sustainable
+ investment.
+ The size of the green investment market in US has grown significantly in
+ the last decade from 22.9 trillion dollars in 2016 to 40 trillion dollars
+ in 2020 (US SIF, 2020).
+ Along with the desire for green investment is the demand for information
+ about firms' ESG activities.
+ Because of this, many organizations around the globe have issued reporting
+ standards for ESG activities which intended to imporve the ESG reporting
+ practics (Christensen et al., 2021).
+ In Hong Kong, HKEX firstly introduced the ESG Reporting Guide in 2013 and
+ required manatory disclosure of ESG reports in 2015.
+ Over the years, HKEX continues to enhance the disclosure requirement.
+ For example, on 5 November 2021, HKEX issues Guidance on Climate Disclosures
+ to encourage listed firms to disclose their Climate-related Financial Disclosur
+es; on 10 December 2021, the updated version of ESG Reporting Guide is released,
+ requiring firms to publish their ESG reports at the same day as annual
+ reports (PwC, 2022).
+ 
+\end_layout
+
+\begin_layout Standard
+There is also a proliferative literatures in accounting and finance studying
+ the effect of ESG reporting to different stackholders.
+ Christensen et al.
+ (2021) comprehensively documented related literatures about the effect
+ of ESG reporting on firms' value, risks, and stock returns etc., to equity
+ holders, debt holders and standard setters etc.
+\end_layout
+
+\begin_layout Standard
+Leveraging NLP techniques including topic modeling and FinBERT ESG classificatio
+n, this project intends to uncover the specific contents in firms' ESG reports
+ for firms listed in HKEX.
+ In addition to the traditional LDA topic modeling, BERTopic
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See Grootendorst (2022) or 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://maartengr.github.io/BERTopic/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ modeling, an emerging technique that uses language embedding and class-based
+ TF-IDF will also be applied to the analysis.
+ Further, the project will use the ESG classifier from FinBERT, a language
+ model based on BERT and mainly tackling NLP tasks in the financial domain
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+See Huang, et al (2022) or 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+https://finbert.ai
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, to examine the proportion of three dimensions (i.e.
+ environmental, social and governance) in an ESG report.
+ Hopefully after the analysis, we can obtain a more comprehensive and accurate
+ understanding about firms' ESG reports.
+ 
+\end_layout
+
+\begin_layout Standard
+Section 2 will brief the data collection process using web-scraping and
+ how the corpus is constructed.
+ Section 3 will cover the results from LDA and BERTopic.
+ Section 4 report the results from FinBERT ESG classification.
+ Section 5 concludes and documents some limitations.
+\end_layout
+
+\begin_layout Section
+ESG Report Corpus Construction
+\end_layout
+
+\begin_layout Subsection
+Web-scraping
+\end_layout
+
+\begin_layout Standard
+Companies listed in HKEX periodically disclose their reports or news on
+ HKEXnews
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www1.hkexnews.hk/search/titlesearch.xhtml?lang=en
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ Using python packages including selenium, bs4, requests etc., we can obtain
+ information (including ESG report name, release time, report url etc.) of
+ firms' ESG reports by inputing file types, keywords, and time range 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+For details, please refer to the webscraping_report_information.py.
+\end_layout
+
+\end_inset
+
+.
+ A glance of the scraped report information is shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Glance-of-Scraped"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The pdf files can then be downloaded using the scraped urls.
+ In total, 6421 PDFs which are about 40G have been downloaded from the HKEXnews.
+ 
+\end_layout
+
+\begin_layout Standard
+The next task is to parse the pdfs to txt files based on which we can create
+ the ESG report corpus.
+ For most companies listed in HKEX, their disclosures are reported in both
+ English and Chinese.
+ This project only investigated into the English texts
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Further research can also consider to analyze the Chinese version and compare
+ the information revealed by different language.
+ For example, Lang, et al.
+ (2022) analyzed the differential treatments and local information advantage
+ from the translation difference of the annual reports.
+\end_layout
+
+\end_inset
+
+.
+ Hence, during the parsing process, some preliminary pre-process have been
+ made: non-English (Chinese words) words are deleted; all digits are deleted;
+ and texts are striped to prevent extra space.
+ We lose 287 files during the parsing process due to formatting issues.
+ In total, we get
+\series bold
+ 
+\series default
+6171 txts file
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The size is about 1G and the raw data are stored in the raw_txt.zip
+\end_layout
+
+\end_inset
+
+ after the parsing process.
+\end_layout
+
+\begin_layout Subsection
+Industry Information
+\end_layout
+
+\begin_layout Standard
+Because the contents disclosed in the ESG reports are usually industry-specific
+ (Christensen et al., 2021), we want to perform our analysis at industry
+ level.
+ It is somewhat annoying that I can't find any direct industry data about
+ firms listed in HKEX after searching on official website.
+ Instead, I can only find a chart at Hong Kong Economic Times
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://invest.hket.com/markets/industry
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+ and aggregate the data with the Hang Seng Industry Classification System
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://www.hsi.com.hk/static/uploads/contents/en/dl_centre/brochures/B_HSICSe.pdf
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ (which is the official classification system used by HKEX) to obtain the
+ firm-industry data.
+\end_layout
+
+\begin_layout Standard
+After preparing those data, we can construct the ESG report corpus by join
+ the report information data, raw txt data and firm-industry data (see Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:ESG-Report-Corpus"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ The corpus construction process is summarized in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:ESG-Corpus-Construction"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Descriptive Data 
+\end_layout
+
+\begin_layout Standard
+The number of ESG reports by fisical year is depicted in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:ESG-reports-distribution"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Since HKEX firstly introduced their ESG Reporting Guide in 2013 and mandated
+ ESG disclosure in 2015, we can see the number of reporting witnesses a
+ sharp increase in 2015 and keep increasing over the next few years.
+ There are only limited observation in 2022, whcih is because, untill the
+ time I scraped the reports (04/13/23), many firms have not disclosed their
+ 2022 ESG reports yet.
+ The number of ESG reports by different industry is displayed in Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Distribution-by-Industry"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Section
+Topic Modeling
+\end_layout
+
+\begin_layout Standard
+The results from LDA and BERTopic on the constructed corpus will be presented
+ in this section.
+ More details are available in the Jupyter Notebook.
+\end_layout
+
+\begin_layout Subsection
+LDA Topic modeling
+\end_layout
+
+\begin_layout Standard
+The corpus is processed through standard pre-processing, tokenization and
+ lemmatization.
+ I also include bigram (which occurs greater than 20 times in a document)
+ to increase the intepretability.
+ Further, I filter out tokens that occur less than 20 documents, or more
+ than 50% of the documents.
+ We can have a preliminary look at the corpus to see the heterogenous contents
+ discolsed by firms from different industries.
+ For instance, common tokens for CGN Power (01816) from enegy industry are
+ 
+\begin_inset Quotes eld
+\end_inset
+
+nuclear_power
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+enegy
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+hazardous_waste
+\begin_inset Quotes erd
+\end_inset
+
+ etc, while on the other hand, for HEC Pharm (01558) from Healthcare industry
+ have more tokens like 
+\begin_inset Quotes eld
+\end_inset
+
+drug_administration
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+generic_drug
+\begin_inset Quotes erd
+\end_inset
+
+, and 
+\begin_inset Quotes eld
+\end_inset
+
+intellectual_property
+\begin_inset Quotes erd
+\end_inset
+
+ etc.
+ 
+\end_layout
+
+\begin_layout Standard
+Due to the long running time, I give up performing the cross validation
+ about choosing the right number of topics, which is one of limitations
+ of this project.
+ The analysis is performed using full sample with 
+\begin_inset Formula $K=20$
+\end_inset
+
+ and 
+\begin_inset Formula $30$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+When 
+\begin_inset Formula $K=20$
+\end_inset
+
+, the average U_mass topic coherenece is 
+\begin_inset Formula $-1.05.$
+\end_inset
+
+ The WordClouds of each topic are generated and are shownin Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:WordClouds-for-LDA"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The order does not represent any ranking.
+\end_layout
+
+\end_inset
+
+.
+ Overall, the model performs well in terms of separability and interpretability
+ as for each topic depicted, we can intuitively assign it a name from the
+ keywords.
+ We now take a closer look at some appealing topics:
+\end_layout
+
+\begin_layout Description
+Topic#0 Keywords: 
+\begin_inset Quotes eld
+\end_inset
+
+pharmaceutical
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+drug
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+school
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+university
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+teaching
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+exhaust_gas
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+innovative
+\begin_inset Quotes erd
+\end_inset
+
+ etc.
+ This topic is about the pharmaceutical companies.
+ It's surprising to see words like 
+\begin_inset Quotes eld
+\end_inset
+
+school
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+university
+\begin_inset Quotes erd
+\end_inset
+
+, and 
+\begin_inset Quotes eld
+\end_inset
+
+teaching
+\begin_inset Quotes erd
+\end_inset
+
+ are also in the same topic.
+ My guess is that the pharmaceutical companies might have close connection
+ with university labs and may have collaboration with the professors as
+ well.
+ They also ca re about how to deal with exhaust gas during the pharmaceutical
+ processes.
+ 
+\end_layout
+
+\begin_layout Description
+Topic#5 Keywords: 
+\begin_inset Quotes eld
+\end_inset
+
+real
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+estate
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+law_republic
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+urban
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+smart
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+public_welfare
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+home
+\begin_inset Quotes erd
+\end_inset
+
+ etc.
+ This topic is related to firms in real estate industry.
+ From the keywords, we can infer that they may like to cite the relevant
+ law (
+\begin_inset Quotes eld
+\end_inset
+
+law_republic
+\begin_inset Quotes erd
+\end_inset
+
+) and to stress their efforts in promoting public welfare.
+ 
+\end_layout
+
+\begin_layout Description
+Topic#9 Keywords: 
+\begin_inset Quotes eld
+\end_inset
+
+bank
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+poverty
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+alleviation
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+poverty_alleviation
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+rural
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+finance
+\begin_inset Quotes erd
+\end_inset
+
+ etc.
+ This reveals that firms in financial industry like to emphasize their efforts
+ in poverty allivation in their ESG disclosure (which complies with the
+ Social dimension in ESG reporting standard).
+ As Chinese governement emphasized a lot about poverty alleviation especially
+ in rural area plus bank as financial intermediaries plays important roles
+ in poverty reduction, it makes sense that banks disclose more about this
+ in their ESG reports.
+ 
+\end_layout
+
+\begin_layout Description
+Topic#12 Keywords: 
+\begin_inset Quotes eld
+\end_inset
+
+engineering
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+technological
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+labor
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+ecological
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+scientific, 
+\begin_inset Quotes eld
+\end_inset
+
+law_republic
+\begin_inset Quotes erd
+\end_inset
+
+ etc.
+ This topic is related to tech firms.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Labor
+\begin_inset Quotes erd
+\end_inset
+
+ is among the top words in this topic, which is reasonable as these years,
+ tech firms are facing controversy on their employees' overtime issue.
+ They may want to justify in their ESG report by disclosing their efforts
+ in complying with the labor law.
+\end_layout
+
+\begin_layout Description
+Topic#18 Keywords: 
+\begin_inset Quotes eld
+\end_inset
+
+food
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+retail
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+hotel
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+wellness
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+plastic
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+executive
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+scheme
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+ordiance
+\begin_inset Quotes erd
+\end_inset
+
+ etc.
+ This topic reveals the contents disclosed by service companies including
+ catering and hotelling.
+ Their focuses may include the use of plastic bag, customer's wellness,
+ food safty ordiance, and executive governance as shown by the keywords.
+ 
+\end_layout
+
+\begin_layout Standard
+The above topics shows the disclosure practice within an industry.
+ There are also more general topics from the generated topics that all firms
+ concern about, such as carbon footprints, renewable energy, ecological
+ economy, employee training, code conduct, and COVID 19 pandemic.
+ 
+\end_layout
+
+\begin_layout Standard
+The results by setting 
+\begin_inset Formula $K=30$
+\end_inset
+
+ are quite similar.
+ It has poorer coherence score compared with the case 
+\begin_inset Formula $K=20$
+\end_inset
+
+.
+ I also performed LDA analysis by different years to see if the disclosed
+ contents have evolution over time.
+ However, the result is quite homogenous to full sample.
+ If you are interested, the detailed results can be obtained in the Jupyter
+ Notebook.
+\end_layout
+
+\begin_layout Subsection
+BERTopic
+\end_layout
+
+\begin_layout Standard
+Compared with LDA, BERTopic is much easier and faster to run and it only
+ requires simple pre-processing (which is excluding stopwords).
+ We only need to fine tune the some parameters (like minimum topic size,
+ which is the minimum number of documents in the resulted topics ) to train
+ the models.
+ When setiing minimum topic size as 10, 100 topics are generated in our
+ corpus (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BERTopic-(minimum-topic"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+ The top topics are quite similar to what we obtained from LDA.
+ Moreover, we can draw the hierarchical clustering of the model to vividly
+ see the similarity between each topics.
+ In the Jupyter Notebook, there are more results with different parameters.
+\end_layout
+
+\begin_layout Standard
+I also tried the model in different industries including finance (see Figure
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BERTopic-Finance-Industry"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+), real estate (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BERTopic-Real-estate-Industry"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+), and IT (see Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BERTopic-IT-Industry"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+), from which we can get more detailed information about each industries.
+ 
+\end_layout
+
+\begin_layout Section
+FinBERT
+\end_layout
+
+\begin_layout Standard
+The ESG classifer from FinBERT can classify a sentence into four categories:
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Environment
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+Social
+\begin_inset Quotes erd
+\end_inset
+
+, 
+\begin_inset Quotes eld
+\end_inset
+
+Governance
+\begin_inset Quotes erd
+\end_inset
+
+, and 
+\begin_inset Quotes eld
+\end_inset
+
+None
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+An intuition about the proportion of category 
+\begin_inset Quotes eld
+\end_inset
+
+None
+\begin_inset Quotes erd
+\end_inset
+
+ is that it could be a proxy for irrelevant information or noise in the
+ reports.
+ 
+\end_layout
+
+\end_inset
+
+.
+ It also assigns corresponding possibilty score to the classification.
+ For example, for sentence 
+\begin_inset Quotes eld
+\end_inset
+
+In June, the upgrade of water recycling pipelines was completed
+\begin_inset Quotes erd
+\end_inset
+
+, the output from classification is {'label': 'Environmental', 'score':
+ 0.96}, which means that with 96% probability, the sentence is about environment
+ issue.
+ Using the sentence tokenizer from nltk, we can then assign each tokenized
+ sentence a category.
+ Here, we assume the classification is accurate thus dismiss the information
+ about the probability.
+ By doing this, we are able to get the number of sentences in each category
+ and further calculate the proportion for an ESG report.
+ Although our data are at firm level, in this project, we will simply look
+ at the average statistics by industry and years.
+ 
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:ESG-Proportion-by"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ displays the average proportion of each category within each industry and
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:ESG-Proportion-by-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ is the average proportion of each category in each year.
+ From the two charts, we can see different dimension that different industries
+ emphasize in ESG reports and the change in the proportion overtime.
+ 
+\end_layout
+
+\begin_layout Standard
+Overall speaking, companies put most of their pen and ink on social aspects
+ followed by environment issue.
+ Governance ranks the lowest and sometimes are enven lower than the None_proport
+ion.
+ By industry, compared with others, companies in financial industry have
+ more social and governance contents and less environment contents in their
+ ESG reports.
+ Their proportion for None category is also the highest, indicating that
+ financial institutions may write more about ESG irrelevant information.
+ On the contrary, firms in utility, materials and energy industry disclose
+ more about envrionmental issue.
+\end_layout
+
+\begin_layout Standard
+Over time, we can clearly see the proportion change.
+ Environment and governance contents are increaseing while social contents
+ have decreaseing trend.
+ It is noticeable that the irrelavent contens (represented by None_proportion)
+ are also declining over time, which might be a sign of increase in ESG
+ disclosure quality.
+ 
+\end_layout
+
+\begin_layout Section
+Conclusion and Limitation
+\end_layout
+
+\begin_layout Standard
+This project leverages the advanced NLP techniques to analyze the contents
+ in the firms' ESG reports.
+ By webscraping ESG reports from HKEX, a large ESG reports corpus is constructed.
+ Topic modeling reveals many hidden information in the ESG reports, and
+ FinBERT ESG classification managed to discover the distribution of the
+ three dimensions in different industry and its change over time.
+ 
+\end_layout
+
+\begin_layout Standard
+Despite fairly good results, there are still some parts that can be further
+ improved.
+ First, the Chinese characters are dismissed in our analysis.
+ Secondly, in the LDA modeling, CV or other model choice methods could be
+ applied to choose the best 
+\begin_inset Formula $K$
+\end_inset
+
+.
+ Lastly, in the FinBERT classification, nltk sentence tokenizer is used.
+ However, by assessing the tokenized outcomes, I find SpaCy should perform
+ better than nltk, but it will take much longer time to run.
+ Due to the time limit, I give up on that.
+ 
+\end_layout
+
+\begin_layout Standard
+Hopefully, this project can help stackholders to understand the current
+ ESG reporting practice more comprehensively and accurately.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+literal "false"
+
+\end_inset
+
+Christensen, H.
+ B., Hail, L., & Leuz, C.
+ (2021).
+ Mandatory CSR and sustainability reporting: Economic analysis and literature
+ review.
+ Review of Accounting Studies, 26(3), 1176–1248.
+ https://doi.org/10.1007/s11142-021-09609-5 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-4"
+
+\end_inset
+
+Grootendorst, M.
+ (2022).
+ BERTopic: Neural topic modeling with a class-based TF-IDF procedure (arXiv:2203.
+05794).
+ arXiv.
+ http://arxiv.org/abs/2203.05794 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-5"
+
+\end_inset
+
+Huang, A.
+ H., Wang, H., & Yang, Y.
+ (2023).
+ FinBERT: A Large Language Model for Extracting Information from Financial
+ Text*.
+ Contemporary Accounting Research, 1911-3846.12832.
+ https://doi.org/10.1111/1911-3846.12832 
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-8"
+
+\end_inset
+
+Lang, T., Stice-Lawrence, L., Wong, Y.
+ T.
+ F., & Wong, T.
+ J., (2022) Differential Treatment and Local Information Advantage: Revelations
+ from Translation Differences.
+ USC Marshall School of Business Research Paper Sponsored by iORB, No.
+ Forthcoming, http://dx.doi.org/10.2139/ssrn.3956105
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-3"
+
+\end_inset
+
+PricewaterhouseCoopers (2022).
+ ESG Reporting Study for Hong Kong Listed Companies 2022.
+ https://www.pwccn.com/en/issues-based/esg-report-2022.pdf
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+US SIF.
+ (2020).
+ Report on US sustainable and impact investing trends 2020.
+ https://www.ussif.org/files/trends%20report%202020%20executive%20summary.pdf
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Tables and Figures
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/report_information.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Glance of Scraped Report Information
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Glance-of-Scraped"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/esg_report_corpus.png
+	scale 33
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+ESG Report Corpus
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:ESG-Report-Corpus"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/esg_corpus_construction.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+ESG Corpus Construction
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:ESG-Corpus-Construction"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/ESG reports distribution by fiscal year.png
+	scale 40
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+ESG reports distribution by fiscal year
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:ESG-reports-distribution"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="13" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="0pt">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Industry-level 1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Number of ESG reports
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Consumer Discretionary
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1533
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Properties & Construction
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1038
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Industrials
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+810
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Financials
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+548
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Telecommunications
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+424
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Healthcare
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+384
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Materials
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+372
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Consumer Staples
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+312
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Utilities
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+292
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Energy
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+223
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Information Technology
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+53
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Conglomerates
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+42
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+ 
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distribution by Industry
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Distribution-by-Industry"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/0.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/1.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/2.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/3.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/4.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/5.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/6.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/7.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/8.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/9.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/10.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/11.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/12.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/13.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/14.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/15.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/16.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/17.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/18.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "20col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/wc_k20/19.png
+	scale 30
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+WordClouds for LDA TM (
+\begin_inset Formula $K=20$
+\end_inset
+
+)
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:WordClouds-for-LDA"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/m1_top_words.png
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/m1_hier_50.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+BERTopic (minimum topic size = 10)
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BERTopic-(minimum-topic"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/mfina_top_20.png
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/mfina_hier.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+BERTopic Finance Industry
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BERTopic-Finance-Industry"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/mre_top_20.png
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/mre_hier.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+BERTopic Real Estate Industry
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BERTopic-Real-estate-Industry"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/mit_top_20.png
+	scale 25
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/bertopic/mit_hier.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+BERTopic IT Industry
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BERTopic-IT-Industry"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/esg_proportion_indu.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+ESG Proportion by Industry
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:ESG-Proportion-by"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename /Users/irene/PycharmProjects/webscraping/ESG/ESG/Reports/Graph/esg_proportion_year.png
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+ESG Proportion by Year
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:ESG-Proportion-by-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
