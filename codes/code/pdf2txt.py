@@ -37,8 +37,8 @@ def pdf_to_text(pdf_file_path, txt_file_path):
     with open(txt_file_path, 'w') as txt_file:
         txt_file.write(text)
 
-pdf_path="/Volumes/Longlive/Research_Assistant/ESG_report/HKEX/Reports/2016"
-txt_path="/Volumes/Longlive/Research_Assistant/ESG_report/HKEX/Reports/txt/"
+pdf_path=""
+txt_path=""
 
 pdfs=os.listdir(pdf_path)
 pdfs = [pdf for pdf in pdfs if pdf[0]!="."] # mac generated contents
